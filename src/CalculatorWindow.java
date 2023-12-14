@@ -37,9 +37,28 @@ public class CalculatorWindow extends JFrame implements ActionListener {
      */
 
     // Center buttons - numbers
-    private final JButton ceroB, oneB, twoB, threeB, fourB, fiveB, sixB, sevenB, eightB, nineB;
+    private final JButton memoryB = new JButton("M");
+    private final JButton clearB = new JButton("C");
+    private final JButton makeNegB = new JButton("(-)");
+    private final JButton sevenB = new JButton("7");
+    private final JButton eightB = new JButton("8");
+    private final JButton nineB = new JButton("9");
+    private final JButton fourB = new JButton("4");
+    private final JButton fiveB = new JButton("5");
+    private final JButton sixB = new JButton("6");
+    private final JButton oneB = new JButton("1");
+    private final JButton twoB = new JButton("2");
+    private final JButton threeB = new JButton("3");
+
+    private final JButton pointB = new JButton(".");
+    private final JButton ceroB = new JButton("0");
+    private final JButton equalsB = new JButton("=");
+
+    //private final JButton oneB, twoB, threeB, fourB, fiveB, sixB, sevenB, eightB, nineB;
+    private final JButton[] numButtons = {ceroB, oneB, twoB, threeB, fourB, fiveB, sixB, sevenB, eightB, nineB};
+
     // Center buttons - functions
-    private final JButton clearB, equalsB, makeNegB, pointB, memoryB;
+    //private final JButton clearB, equalsB, makeNegB, pointB, memoryB;
 
     // West panel buttons
     private final JButton powerYB, sinB, cosB, tanB, logB, lnB, factB;
@@ -106,37 +125,18 @@ public class CalculatorWindow extends JFrame implements ActionListener {
         calcDisplay.setHorizontalAlignment(SwingConstants.RIGHT);
         calcDisplay.setEditable(false);
         displayPanel.add(calcDisplay);
+        calcDisplay.setText("0.0");
 
         // Button definitions - start with center panel
-        memoryB = new JButton("M");                         // Save the button's char
+        setButtonSettings(numButtons);
+        
+
+        //memoryB = new JButton("M");                         // Save the button's char
+
         memoryB.addActionListener(this);                         // Assign an action listener to the button
-        clearB = new JButton("C");
         clearB.addActionListener(this);
-        makeNegB = new JButton("(-)");
         makeNegB.addActionListener(this);
-        sevenB = new JButton("7");
-        sevenB.addActionListener(this);
-        eightB = new JButton("8");
-        eightB.addActionListener(this);
-        nineB = new JButton("9");
-        nineB.addActionListener(this);
-        fourB = new JButton("4");
-        fourB.addActionListener(this);
-        fiveB = new JButton("5");
-        fiveB.addActionListener(this);
-        sixB = new JButton("6");
-        sixB.addActionListener(this);
-        oneB = new JButton("1");
-        oneB.addActionListener(this);
-        twoB = new JButton("2");
-        twoB.addActionListener(this);
-        threeB = new JButton("3");
-        threeB.addActionListener(this);
-        pointB = new JButton(".");
         pointB.addActionListener(this);
-        ceroB = new JButton("0");
-        ceroB.addActionListener(this);
-        equalsB = new JButton("=");
         equalsB.addActionListener(this);
         
 
@@ -147,26 +147,6 @@ public class CalculatorWindow extends JFrame implements ActionListener {
         clearB.setForeground(Color.BLACK);
         equalsB.setBackground(Color.WHITE);
         equalsB.setForeground(Color.BLACK);
-        sevenB.setBackground(Color.WHITE);
-        sevenB.setForeground(Color.BLACK);
-        eightB.setBackground(Color.WHITE);
-        eightB.setForeground(Color.BLACK);
-        nineB.setBackground(Color.WHITE);
-        nineB.setForeground(Color.BLACK);
-        fourB.setBackground(Color.WHITE);
-        fourB.setForeground(Color.BLACK);
-        fiveB.setBackground(Color.WHITE);
-        fiveB.setForeground(Color.BLACK);
-        sixB.setBackground(Color.WHITE);
-        sixB.setForeground(Color.BLACK);
-        oneB.setBackground(Color.WHITE);
-        oneB.setForeground(Color.BLACK);
-        twoB.setBackground(Color.WHITE);
-        twoB.setForeground(Color.BLACK);
-        threeB.setBackground(Color.WHITE);
-        threeB.setForeground(Color.BLACK);
-        ceroB.setBackground(Color.WHITE);
-        ceroB.setForeground(Color.BLACK);
         pointB.setBackground(Color.WHITE);
         pointB.setForeground(Color.BLACK);
         makeNegB.setBackground(Color.WHITE);
@@ -290,8 +270,19 @@ public class CalculatorWindow extends JFrame implements ActionListener {
         return newPanel;
     }
 
+    public void setButtonSettings(JButton[] buttonArray){
+        for(int i = 0; i < buttonArray.length; i++){
+            buttonArray[i].addActionListener(this);
+            buttonArray[i].setBackground(Color.WHITE);
+            buttonArray[i].setForeground(Color.BLACK);
+        }
+    }
+
     public void actionPerformed(ActionEvent event){
         JButton clickedButton = (JButton) event.getSource();
+
+        if(calcDisplay.getText().equals("-0.0")){calcDisplay.setText("-");};
+        if(calcDisplay.getText().equals("0.0")){calcDisplay.setText("");};
             
         // Number Buttons
         if (clickedButton == oneB){                                 // If pressed '1'
@@ -374,7 +365,9 @@ public class CalculatorWindow extends JFrame implements ActionListener {
 
         // Function buttons
         } else if (clickedButton == makeNegB) {                     // If pressed make negative button - turns the value on display into a negative value
-            if(calcDisplay.getText().charAt(0) == '-'){             // Checks if the value was already converted to negative to turn it into positive
+            if(calcDisplay.getText().isEmpty()){             // Checks if the value was already converted to negative to turn it into positive
+                calcDisplay.setText("-0.0");
+            } else if (calcDisplay.getText().charAt(0) == '-'){             // Checks if the value was already converted to negative to turn it into positive
                 calcDisplay.setText(calcDisplay.getText().replace('-', ' '));
             } else {
                 calcDisplay.setText("-" + calcDisplay.getText());
@@ -385,7 +378,7 @@ public class CalculatorWindow extends JFrame implements ActionListener {
 
         } else if (clickedButton == clearB) {                       // If pressed clear button
             val1 = "";
-            calcDisplay.setText("");
+            calcDisplay.setText("0");
 
         } else if (clickedButton == plusB) {                        // If pressed plus button - +
             val1 = calcDisplay.getText();                           // Store the first value for later use
