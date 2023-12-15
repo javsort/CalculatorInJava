@@ -35,11 +35,7 @@ public class CalculatorWindow extends JFrame implements ActionListener {
      *      1. First, the number buttons: including pointB and makeNegB, these buttons 'append' a value to the display, can be a digit or symbol
      *      2. Second, the function buttons: all the buttons that can perform a mathematical action, such as +, -, *, /, %, etc.
      */
-
     // Center buttons - numbers
-    private final JButton memoryB = new JButton("M");
-    private final JButton clearB = new JButton("C");
-    private final JButton makeNegB = new JButton("(-)");
     private final JButton sevenB = new JButton("7");
     private final JButton eightB = new JButton("8");
     private final JButton nineB = new JButton("9");
@@ -50,22 +46,42 @@ public class CalculatorWindow extends JFrame implements ActionListener {
     private final JButton twoB = new JButton("2");
     private final JButton threeB = new JButton("3");
 
+    // Center buttons - functions
+    private final JButton memoryB = new JButton("M");
+    private final JButton clearB = new JButton("C");
+    private final JButton makeNegB = new JButton("(-)");
     private final JButton pointB = new JButton(".");
     private final JButton ceroB = new JButton("0");
     private final JButton equalsB = new JButton("=");
 
-    //private final JButton oneB, twoB, threeB, fourB, fiveB, sixB, sevenB, eightB, nineB;
-    private final JButton[] numButtons = {ceroB, oneB, twoB, threeB, fourB, fiveB, sixB, sevenB, eightB, nineB};
+    // Center buttons array
+    private final JButton[] centButtons = {memoryB, clearB, makeNegB, sevenB, eightB, nineB, fourB, fiveB, sixB, oneB, twoB, threeB, pointB, ceroB, equalsB};
 
-    // Center buttons - functions
-    //private final JButton clearB, equalsB, makeNegB, pointB, memoryB;
 
     // West panel buttons
-    private final JButton powerYB, sinB, cosB, tanB, logB, lnB, factB;
+    private final JButton powerYB = new JButton("x^y");
+    private final JButton sinB = new JButton("sin");
+    private final JButton cosB = new JButton("cos");
+    private final JButton tanB = new JButton("tan");
+    private final JButton logB = new JButton("log");
+    private final JButton lnB = new JButton("ln");
+    private final JButton factB = new JButton("x!");
+
+    // West panel buttons arrays
+    private final JButton[] westFunctButtons = {powerYB, sinB, cosB, tanB, logB, lnB, factB};
 
     // East panel buttons
-    private final JButton plusB, minusB, multB, divisionB, modularB, squareRootB, powerTwoB, powerThreeB;
+    private final JButton plusB = new JButton("+");
+    private final JButton minusB = new JButton("-");
+    private final JButton multB = new JButton("x");
+    private final JButton divisionB = new JButton("/");
+    private final JButton modularB = new JButton("%");
+    private final JButton squareRootB = new JButton("√");
+    private final JButton powerTwoB = new JButton("x^2");
+    private final JButton powerThreeB = new JButton("x^3");
 
+    //East panel buttons arrays
+    private final JButton[] eastFunctButtons = {plusB, minusB, multB, divisionB, modularB, squareRootB, powerTwoB, powerThreeB};
 
     // Display
     private final JTextField calcDisplay;
@@ -125,141 +141,17 @@ public class CalculatorWindow extends JFrame implements ActionListener {
         calcDisplay.setHorizontalAlignment(SwingConstants.RIGHT);
         calcDisplay.setEditable(false);
         displayPanel.add(calcDisplay);
-        calcDisplay.setText("0.0");
 
-        // Button definitions - start with center panel
-        setButtonSettings(numButtons);
-        
-
-        //memoryB = new JButton("M");                         // Save the button's char
-
-        memoryB.addActionListener(this);                         // Assign an action listener to the button
-        clearB.addActionListener(this);
-        makeNegB.addActionListener(this);
-        pointB.addActionListener(this);
-        equalsB.addActionListener(this);
-        
-
-        // Color characteristics for center buttons
-        memoryB.setBackground(Color.WHITE);
-        memoryB.setForeground(Color.BLACK);
-        clearB.setBackground(Color.WHITE);
-        clearB.setForeground(Color.BLACK);
-        equalsB.setBackground(Color.WHITE);
-        equalsB.setForeground(Color.BLACK);
-        pointB.setBackground(Color.WHITE);
-        pointB.setForeground(Color.BLACK);
-        makeNegB.setBackground(Color.WHITE);
-        makeNegB.setForeground(Color.BLACK);
-
-        // Add the buttons
-        functPanelCenter.add(memoryB);
-        functPanelCenter.add(clearB);
-        functPanelCenter.add(makeNegB);
-        functPanelCenter.add(sevenB);
-        functPanelCenter.add(eightB);
-        functPanelCenter.add(nineB);
-        functPanelCenter.add(fourB);
-        functPanelCenter.add(fiveB);
-        functPanelCenter.add(sixB);
-        functPanelCenter.add(oneB);
-        functPanelCenter.add(twoB);
-        functPanelCenter.add(threeB);
-        functPanelCenter.add(pointB);
-        functPanelCenter.add(ceroB);
-        functPanelCenter.add(equalsB);
-
-        // West panel
-        powerYB = new JButton("x^y");
-        powerYB.addActionListener(this);
-        sinB = new JButton("sin");
-        sinB.addActionListener(this);
-        cosB = new JButton("cos");
-        cosB.addActionListener(this);
-        tanB = new JButton("tan");
-        tanB.addActionListener(this);
-        logB = new JButton("log");
-        logB.addActionListener(this);
-        lnB = new JButton("ln");
-        lnB.addActionListener(this);
-        factB = new JButton("x!");
-        factB.addActionListener(this);
-
-        // Color characteristics for west buttons
-        powerYB.setBackground(Color.WHITE);
-        powerYB.setForeground(Color.BLACK);
-        sinB.setBackground(Color.WHITE);
-        sinB.setForeground(Color.BLACK);
-        cosB.setBackground(Color.WHITE);
-        cosB.setForeground(Color.BLACK);
-        tanB.setBackground(Color.WHITE);
-        tanB.setForeground(Color.BLACK);
-        logB.setBackground(Color.WHITE);
-        logB.setForeground(Color.BLACK);
-        lnB.setBackground(Color.WHITE);
-        lnB.setForeground(Color.BLACK);
-        factB.setBackground(Color.WHITE);
-        factB.setForeground(Color.BLACK);
-        
-        // Add the buttons
-        functPanelWest.add(powerYB);
-        functPanelWest.add(sinB);
-        functPanelWest.add(cosB);
-        functPanelWest.add(tanB);
-        functPanelWest.add(logB);
-        functPanelWest.add(lnB);
-        functPanelWest.add(factB);
-
-        // East panel
-        plusB = new JButton("+");
-        plusB.addActionListener(this);
-        minusB = new JButton("-");
-        minusB.addActionListener(this);
-        multB = new JButton("x");
-        multB.addActionListener(this);
-        divisionB = new JButton("/");
-        divisionB.addActionListener(this);
-        modularB = new JButton("%");
-        modularB.addActionListener(this);
-        squareRootB = new JButton("√");
-        squareRootB.addActionListener(this);
-        powerTwoB = new JButton("x^2");
-        powerTwoB.addActionListener(this);
-        powerThreeB = new JButton("x^3");
-        powerThreeB.addActionListener(this);
-
-        // Color characteristics for east buttons
-        plusB.setBackground(Color.WHITE);
-        plusB.setForeground(Color.BLACK);
-        minusB.setBackground(Color.WHITE);
-        minusB.setForeground(Color.BLACK);
-        multB.setBackground(Color.WHITE);
-        multB.setForeground(Color.BLACK);
-        divisionB.setBackground(Color.WHITE);
-        divisionB.setForeground(Color.BLACK);
-        modularB.setBackground(Color.WHITE);
-        modularB.setForeground(Color.BLACK);
-        squareRootB.setBackground(Color.WHITE);
-        squareRootB.setForeground(Color.BLACK);
-        powerTwoB.setBackground(Color.WHITE);
-        powerTwoB.setForeground(Color.BLACK);
-        powerThreeB.setBackground(Color.WHITE);
-        powerThreeB.setForeground(Color.BLACK);
-
-        // Add the buttons
-        functPanelEast.add(plusB);
-        functPanelEast.add(minusB);
-        functPanelEast.add(multB);
-        functPanelEast.add(divisionB);
-        functPanelEast.add(modularB);
-        functPanelEast.add(squareRootB);
-        functPanelEast.add(powerTwoB);
-        functPanelEast.add(powerThreeB);
+        // Button definitions
+        setButtonSettings(centButtons, functPanelCenter);
+        setButtonSettings(westFunctButtons, functPanelWest);
+        setButtonSettings(eastFunctButtons, functPanelEast);
 
         // Closes when 'X' is pressed
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    // Method that sets the characteristics for the panels
     public JPanel setPanelCharacteristics(JPanel toEdit, int setRow, int setCol){
         JPanel newPanel = toEdit;
 
@@ -270,19 +162,20 @@ public class CalculatorWindow extends JFrame implements ActionListener {
         return newPanel;
     }
 
-    public void setButtonSettings(JButton[] buttonArray){
+    // Method that sets the characteristics for the buttons and adds it to its panel
+    public void setButtonSettings(JButton[] buttonArray, JPanel panel){
         for(int i = 0; i < buttonArray.length; i++){
             buttonArray[i].addActionListener(this);
             buttonArray[i].setBackground(Color.WHITE);
             buttonArray[i].setForeground(Color.BLACK);
+
+            panel.add(buttonArray[i]);
         }
     }
 
+    // Method that handles the events for the buttons
     public void actionPerformed(ActionEvent event){
         JButton clickedButton = (JButton) event.getSource();
-
-        if(calcDisplay.getText().equals("-0.0")){calcDisplay.setText("-");};
-        if(calcDisplay.getText().equals("0.0")){calcDisplay.setText("");};
             
         // Number Buttons
         if (clickedButton == oneB){                                 // If pressed '1'
@@ -365,9 +258,7 @@ public class CalculatorWindow extends JFrame implements ActionListener {
 
         // Function buttons
         } else if (clickedButton == makeNegB) {                     // If pressed make negative button - turns the value on display into a negative value
-            if(calcDisplay.getText().isEmpty()){             // Checks if the value was already converted to negative to turn it into positive
-                calcDisplay.setText("-0.0");
-            } else if (calcDisplay.getText().charAt(0) == '-'){             // Checks if the value was already converted to negative to turn it into positive
+            if (calcDisplay.getText().charAt(0) == '-'){             // Checks if the value was already converted to negative to turn it into positive
                 calcDisplay.setText(calcDisplay.getText().replace('-', ' '));
             } else {
                 calcDisplay.setText("-" + calcDisplay.getText());
