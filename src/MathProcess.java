@@ -16,11 +16,25 @@ public class MathProcess {
         val2 = v2;
         result = 0;
     }
+
     // Constructor for single value processes
     public MathProcess(double v1){
         val1 = v1;
         result = 0;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public double getVal1(){
+        return val1;
+    }
+
+    public double getVal2(){
+        return val2;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Single value methods
     public double squareRoot(){

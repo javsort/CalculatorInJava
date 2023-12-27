@@ -20,9 +20,7 @@ public class CalculatorWindow extends JFrame implements ActionListener {
     private static final int thick = 2;                         // Line thickness
 
     // Inner variables
-    private final String[] operations = {"plus", "minus", "mult", "division", "modular", "squareRoot", "powerTwo",
-                                    "powerThree", "powerY", "sin", "cos", "tan", "log", "ln", "fact"};
-    private int op;
+    private int op = -1;                                        // -1 = no operation
 
     private String val1 = "0.0";
     private double result;
@@ -85,6 +83,9 @@ public class CalculatorWindow extends JFrame implements ActionListener {
 
     // Display
     private final JTextField calcDisplay;
+
+    MathProcess doubleValProcess;
+    MathProcess singleValProcess;
 
     // Calculator properties
     CalculatorWindow() {
@@ -308,37 +309,51 @@ public class CalculatorWindow extends JFrame implements ActionListener {
             value2 = Double.parseDouble(calcDisplay.getText());
 
             // Create a MathProcess object for a double value process
-            MathProcess doubleValProcess = new MathProcess(value1, value2);
 
-            switch (operations[op]) {                               // Depending on which value was given to 'op', choose the operation
-                case "plus":                                        // If operations[0] = plus
-                    result = doubleValProcess.plus();
-                    break;
+            try {
+                doubleValProcess = new MathProcess(value1, value2);   // Create a MathProcess object for a double value process
 
-                // If operations[1] = minus
-                case "minus":
-                    result = doubleValProcess.minus();
-                    break;
+                switch (op) {                                       // Depending on which value was given to 'op', choose the operation
+                    case 0:                                        // If op 0 = plus
+                        result = doubleValProcess.plus();
+                        break;
 
-                case "mult":                                        // If operations[2] = multiplication
-                    result = doubleValProcess.mult();
-                    break;
+                    // If operations[1] = minus
+                    case 1:                                       // If op 1 = minus
+                        result = doubleValProcess.minus();
+                        break;
 
-                case "division":                                    // If operations[3] = division
-                    result = doubleValProcess.division();
-                    break;
-                
-                case "modular":                                     // If operations[4] = modular
-                    result = doubleValProcess.modular();
-                    break;
-                
-                case "powerY":                                      // If operations[8] = powerY
-                    result = doubleValProcess.powerY();
-                    break;
-            }                               
-            val1 = "" + result;                                     // Store the result as the first value if the player wants to keep using it
-            memory = result;                                        // Store the result in memory, also if the player wants to keep using it
-            calcDisplay.setText(val1);                              // Display the result
+                    case 2:                                        // If op 2 = multiplication
+                        result = doubleValProcess.mult();
+                        break;
+
+                    case 3:                                    // If op 3 = division
+                        if(doubleValProcess.getVal2() == 0){ throw new Exception();};
+
+                        result = doubleValProcess.division();
+                        break;
+                    
+                    case 4:                                     // If op 4 = modular
+                        result = doubleValProcess.modular();
+                        break;
+                    
+                    case 8:                                      // If op 8 = powerY
+                        if(doubleValProcess.getVal1() < 0 && doubleValProcess.getVal2() < 0 ){ throw new Exception();};
+                        result = doubleValProcess.powerY();
+                        break;
+                }     
+
+                val1 = "" + result;                                     // Store the result as the first value if the player wants to keep using it
+                memory = result;                                        // Store the result in memory, also if the player wants to keep using it
+                calcDisplay.setText(val1);                              // Display the result
+
+            } catch (Exception e){
+                System.out.println("Exception caught!!");
+                calcDisplay.setText("ERROR");
+
+                val1 = null;                                            // Store the result as the first value if the player wants to keep using it
+            }
+            
 
         // If the user clicks any single value process (√, x^2, x^3, sin, cos, tan, log, ln, x!)
         } else if (clickedButton == squareRootB || clickedButton == powerTwoB || clickedButton == powerThreeB
@@ -346,12 +361,6 @@ public class CalculatorWindow extends JFrame implements ActionListener {
         || clickedButton == logB || clickedButton == lnB || clickedButton == factB){
             value1 = Double.parseDouble(calcDisplay.getText());     // Get the value for the function, set the second one to 0
             value2 = 0;
-
-            int isRootValid = 1;                                    // Variable that changes depending on if value1 is negative or not
-            if(value1 <= 0){isRootValid = 0;}
-
-            // Create a MathProcess object for a single value process
-            MathProcess singleValProcess = new MathProcess(value1);
 
             if(clickedButton == squareRootB){ op = 5;}              // Set the op position within the 'operations' array
             else if(clickedButton == powerTwoB){ op = 6;}
@@ -363,51 +372,62 @@ public class CalculatorWindow extends JFrame implements ActionListener {
             else if(clickedButton == lnB){ op = 13;}
             else if(clickedButton == factB){ op = 14;}
 
-            switch (operations[op]){
-                case "squareRoot":                                  // If operations[5] = squareRoot
-                    if(isRootValid == 0){                           // If the value the user wants to get the square root off is negative, it returns an error
-                        isRootValid = 1;
-                        calcDisplay.setText("ERROR");
-                    } else {
+            try {
+                // Create a MathProcess object for a single value process
+                singleValProcess = new MathProcess(value1);
+
+                switch (op){
+                    case 5:                                             // If op 5 = squareRoot
+                        if(singleValProcess.getVal1() < 0){throw new Exception();};     // If the user tries to get the square root of a negative number, it returns an error
                         result = singleValProcess.squareRoot();
-                    }
-                    break;
+                        break;
 
-                case "powerTwo":                                    // If operations[6] = powerTwo
-                    result = singleValProcess.powerTwo();
-                    break;
+                    case 6:                                    // If operations[6] = powerTwo
+                        result = singleValProcess.powerTwo();
+                        break;
 
-                case "powerThree":                                  // If operations[7] = powerThree
-                    result = singleValProcess.powerThree();
-                    break;
-                
-                case "sin":                                         // If operations[9] = sin
-                    result = singleValProcess.sin();
-                    break;
-                
-                case "cos":                                         // If operations[10] = cos
-                    result = singleValProcess.cos();
-                    break;
+                    case 7:                                  // If operations[7] = powerThree
+                        result = singleValProcess.powerThree();
+                        break;
+                    
+                    case 9:                                         // If operations[9] = sin
+                        result = singleValProcess.sin();
+                        break;
+                    
+                    case 10:                                         // If operations[10] = cos
+                        result = singleValProcess.cos();
+                        break;
 
-                case "tan":                                         // If operations[11] = tan
-                    result = singleValProcess.tan();
-                    break;
+                    case 11:                                         // If operations[11] = tan
+                        result = singleValProcess.tan();
+                        break;
 
-                case "log":                                         // If operations[12] = log
-                    result = singleValProcess.log();
-                    break;
+                    case 12:                                         // If operations[12] = log
+                        if(singleValProcess.getVal1() < 0){throw new Exception();};
+                        result = singleValProcess.log();
+                        break;
 
-                case "ln":                                          // If operations[13] = ln
-                    result = singleValProcess.ln();
-                    break;
+                    case 13:                                          // If operations[13] = ln
+                        if(singleValProcess.getVal1() < 0){throw new Exception();};
+                        result = singleValProcess.ln();
+                        break;
 
-                case "fact":                                        // If operations[14] = x!
-                    result = singleValProcess.factorial();
-                    break;
+                    case 14:                                        // If operations[14] = x!
+                        if(singleValProcess.getVal1() < 0){throw new Exception();};
+                        result = singleValProcess.factorial();
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Exception caught!!");
+                calcDisplay.setText("ERROR");
+
+                val1 = null;    
             }
 
+            
+
             if(calcDisplay.getText().contains("ERROR")){            // If the squareRoot method sets the result as "ERROR", this just keeps displaying it
-                isRootValid = 0;
+                // do nothing and continue displaying the error message
             } else {
                 val1 = "" + result;                                 // Same procedure as equalsButton
                 memory = result;  
