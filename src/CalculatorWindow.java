@@ -177,6 +177,10 @@ public class CalculatorWindow extends JFrame implements ActionListener {
     // Method that handles the events for the buttons
     public void actionPerformed(ActionEvent event){
         JButton clickedButton = (JButton) event.getSource();
+
+        if(calcDisplay.getText().contains("ERROR")){                // If the display contains an error message, this clears it when the user presses any button
+            calcDisplay.setText("");
+        }
             
         // Number Buttons
         if (clickedButton == oneB){                                 // If pressed '1'
